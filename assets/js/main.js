@@ -6,6 +6,10 @@
 
     var BAKERY_WHATSAPP = "917593836666";
 
+    // Google Sheet with the cake menu, published as CSV
+    // (File > Share > Publish to web > CSV). Leave empty to use assets/data/cakes.csv.
+    var MENU_SHEET_URL = "";
+
     function escapeHtml(text) {
         return String(text).replace(/[&<>"']/g, function (c) {
             return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
@@ -129,21 +133,82 @@
         return col;
     }
 
-    function loadCakes() {
-        var cakeListEl = document.getElementById("cake-list");
-        if (!cakeListEl) return;
+    // Splits CSV text into rows of fields, handling quoted fields with commas,
+    // quotes ("") and line breaks, as Google Sheets exports them.
+    function parseCsv(text) {
+        var rows = [], row = [], field = "", quoted = false;
+        text = text.replace(/^\uFEFF/, "");
+        for (var i = 0; i < text.length; i++) {
+            var c = text[i];
+            if (quoted) {
+                if (c === '"' && text[i + 1] === '"') { field += '"'; i++; }
+                else if (c === '"') quoted = false;
+                else field += c;
+            } else if (c === '"') {
+                quoted = true;
+            } else if (c === ",") {
+                row.push(field); field = "";
+            } else if (c === "\n" || c === "\r") {
+                if (c === "\r" && text[i + 1] === "\n") i++;
+                row.push(field); rows.push(row); row = []; field = "";
+            } else {
+                field += c;
+            }
+        }
+        if (field !== "" || row.length) { row.push(field); rows.push(row); }
+        return rows.filter(function (r) { return r.join("").trim() !== ""; });
+    }
 
-        // Cache-buster so browser always gets latest CSV
-        var csvUrl = "assets/data/cakes.csv?_=" + Date.now();
+    // Turns CSV rows into cakes, finding columns by their header names
+    function cakesFromCsv(text) {
+        var rows = parseCsv(text);
+        if (rows.length <= 1) return [];
+        var header = rows[0].map(function (h) { return h.trim().toLowerCase(); });
+        function col(name, fallback) {
+            var idx = header.indexOf(name);
+            return idx === -1 ? fallback : idx;
+        }
+        var cols = { name: col("name", 0), price: col("price", 1), description: col("description", 2), image: col("image", 3) };
+        return rows.slice(1).map(function (r) {
+            return {
+                name: (r[cols.name] || "").trim(),
+                price: (r[cols.price] || "").trim(),
+                description: (r[cols.description] || "").trim(),
+                image: (r[cols.image] || "").trim()
+            };
+        }).filter(function (cake) { return cake.name; });
+    }
 
-        fetch(csvUrl)
+    function fetchCsv(url) {
+        // Cache-buster so browser always gets the latest menu
+        return fetch(url + (url.indexOf("?") === -1 ? "?" : "&") + "_=" + Date.now())
             .then(function (response) {
                 if (!response.ok) throw new Error("Network response was not ok");
                 return response.text();
             })
-            .then(function (csvText) {
-                var lines = csvText.split(/\r?\n/).filter(function (line) { return line.trim() !== ""; });
-                if (lines.length <= 1) {
+            .then(function (text) {
+                var cakes = cakesFromCsv(text);
+                if (!cakes.length && /<html/i.test(text)) throw new Error("Not a CSV file");
+                return cakes;
+            });
+    }
+
+    function loadCakes() {
+        var cakeListEl = document.getElementById("cake-list");
+        if (!cakeListEl) return;
+
+        var localCsv = "assets/data/cakes.csv";
+        var menu = MENU_SHEET_URL
+            ? fetchCsv(MENU_SHEET_URL).catch(function (error) {
+                // Sheet unreachable or not published: use the copy in the repo
+                console.warn("Could not load the Google Sheet menu, using cakes.csv:", error);
+                return fetchCsv(localCsv);
+            })
+            : fetchCsv(localCsv);
+
+        menu
+            .then(function (cakes) {
+                if (!cakes.length) {
                     cakeListEl.innerHTML = '<p class="cake-status">No cakes to display right now.</p>';
                     return;
                 }
@@ -157,19 +222,7 @@
                     if (firstOption) orderItemSelect.appendChild(firstOption);
                 }
 
-                // Start from 1 to skip header row
-                for (var i = 1; i < lines.length; i++) {
-                    var parts = lines[i].split(",");
-                    if (parts.length < 4) continue;
-
-                    var cake = {
-                        name: parts[0].trim(),
-                        price: parts[1].trim(),
-                        image: parts[parts.length - 1].trim(),
-                        description: parts.slice(2, parts.length - 1).join(",").trim()
-                    };
-                    if (!cake.name) continue;
-
+                cakes.forEach(function (cake) {
                     var card = cakeCard(cake);
                     cakeListEl.appendChild(card);
                     reveal(card);
@@ -180,7 +233,7 @@
                         opt.textContent = cake.name;
                         orderItemSelect.appendChild(opt);
                     }
-                }
+                });
 
                 // Add "Custom Cake" option manually at end
                 if (orderItemSelect) {
@@ -191,7 +244,7 @@
                 }
             })
             .catch(function (error) {
-                console.error("Error loading cakes.csv:", error);
+                console.error("Error loading the cake menu:", error);
                 cakeListEl.innerHTML =
                     '<p class="cake-status error">Unable to load cake menu at the moment. Please try again later.</p>';
             });
