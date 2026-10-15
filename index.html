@@ -2,641 +2,479 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Nila Bake House – Fresh Cakes & Bakes</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nila Bake House – Fresh Cakes &amp; Bakes in Koppam</title>
+    <meta name="description" content="Nila Bake House – Freshly baked cakes, pastries, and snacks in Koppam, Kerala. Browse our menu and order directly on WhatsApp.">
+    <meta name="theme-color" content="#009fe8">
+    <link rel="canonical" href="https://nilabakehousekoppam.in/">
 
-    <!-- SEO -->
-    <meta name="description" content="Nila Bake House – Freshly baked cakes, pastries, and snacks. Order online and chat on WhatsApp.">
+    <!-- Social sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Nila Bake House – Fresh Cakes & Bakes">
+    <meta property="og:description" content="Homemade cakes, pastries, and snacks baked fresh every day in Koppam. Order on WhatsApp.">
+    <meta property="og:url" content="https://nilabakehousekoppam.in/">
+    <meta property="og:image" content="https://nilabakehousekoppam.in/assets/images/web/birthday-header.webp">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/images/web/favicon.png">
+    <link rel="apple-touch-icon" href="assets/images/web/favicon.png">
 
-    <!-- Icons (Bootstrap Icons) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <!-- Fonts & icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <!-- Google Font (fallback similar to Tango BT) -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&display=swap">
+    <link rel="stylesheet" href="assets/css/style.css">
 
-    <style>
-        :root {
-            --nila-blue: #009fe8;
-            --nila-blue-soft: #e6f5ff;
-            --nila-blue-dark: #004c97;
-        }
-
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        }
-
-        /* Navbar */
-        .navbar-brand span {
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .navbar-brand img {
-            height: 40px;
-            width: auto;
-            margin-right: 8px;
-        }
-
-        .brand-title {
-            font-family: "Tango BT", "Baloo 2", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        }
-
-        /* Hero */
-        .hero-section {
-            padding: 100px 0 80px;
-            background: radial-gradient(circle at top left, var(--nila-blue-soft), #ffffff),
-                        radial-gradient(circle at bottom right, #ccecff, #f7fbff);
-        }
-
-        .hero-title {
-            font-size: 2.8rem;
-            font-weight: 800;
-        }
-
-        .hero-title-brand {
-            font-family: "Tango BT", "Baloo 2", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        }
-
-        .hero-badge {
-            background-color: var(--nila-blue);
-            color: #ffffff;
-            font-weight: 600;
-            border-radius: 999px;
-            padding: 6px 16px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .hero-image {
-            max-width: 420px;
-        }
-        @media (max-width: 768px) {
-            .hero-image {
-                display: none !important;
-            }
-            #home .col-md-6.text-center {
-                display: none !important;
-            }
-        }
-
-        /* Sections */
-        section {
-            scroll-margin-top: 90px; /* for smooth anchor scrolling */
-        }
-
-        .section-title {
-            font-weight: 700;
-        }
-
-        .section-subtitle {
-            color: #777;
-            max-width: 600px;
-        }
-
-        /* Cards */
-        .product-card img {
-            border-top-left-radius: 0.75rem;
-            border-top-right-radius: 0.75rem;
-            height: 180px;
-            object-fit: cover;
-        }
-
-        .product-card {
-            border-radius: 0.75rem;
-            border: 1px solid #d2e8ff;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-        }
-
-        .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
-        }
-
-        /* WhatsApp Floating Button */
-        .whatsapp-float {
-            position: fixed;
-            bottom: 18px;
-            right: 18px;
-            z-index: 1000;
-        }
-
-        .whatsapp-float .btn {
-            border-radius: 999px;
-            padding: 12px 18px;
-            font-weight: 600;
-        }
-
-        /* Footer */
-        .footer {
-            background-color: var(--nila-blue-dark);
-            color: #eaf4ff;
-        }
-
-        .footer a {
-            color: #cfe6ff;
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* Button colors override */
-        .btn-primary {
-            background-color: var(--nila-blue);
-            border-color: var(--nila-blue);
-        }
-        .btn-primary:hover {
-            background-color: var(--nila-blue-dark);
-            border-color: var(--nila-blue-dark);
-        }
-        .btn-outline-primary {
-            color: var(--nila-blue);
-            border-color: var(--nila-blue);
-        }
-        .btn-outline-primary:hover {
-            color: #ffffff;
-            background-color: var(--nila-blue);
-            border-color: var(--nila-blue);
-        }
-
-        a {
-            color: var(--nila-blue-dark);
-        }
-        a:hover {
-            color: var(--nila-blue);
-        }
-    </style>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Bakery",
+        "name": "Nila Bake House",
+        "url": "https://nilabakehousekoppam.in/",
+        "logo": "https://nilabakehousekoppam.in/assets/images/nila-logo.png",
+        "telephone": "+91 75938 36666",
+        "email": "nilabakehousekoppam@gmail.com",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Koppam, Muthuthala",
+            "addressLocality": "Koppam",
+            "addressRegion": "Kerala",
+            "postalCode": "679307",
+            "addressCountry": "IN"
+        },
+        "openingHours": "Mo-Su 09:00-21:00",
+        "servesCuisine": "Cakes, Bakery"
+    }
+    </script>
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
-    <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="#home">
-            <img src="assets/images/nila-logo.png" alt="Nila Bake House Logo">
-            <span class="brand-title">Nila Bake House</span>
+<a class="skip-link" href="#menu">Skip to menu</a>
+
+<!-- Announcement bar -->
+<div class="topbar">
+    <div class="container topbar-inner">
+        <span><i class="bi bi-clock-history"></i> Pre-order custom cakes at least 1 day in advance</span>
+        <a href="https://wa.me/917593836666" target="_blank" rel="noopener" class="topbar-link">
+            <i class="bi bi-whatsapp"></i> +91 75938 36666
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
-            <span class="navbar-toggler-icon"></span>
+    </div>
+</div>
+
+<!-- Header / navigation -->
+<header class="site-header" id="siteHeader">
+    <div class="container nav-inner">
+        <a class="brand" href="#home" aria-label="Nila Bake House home">
+            <picture>
+                <source srcset="assets/images/web/nila-logo.webp" type="image/webp">
+                <img src="assets/images/web/nila-logo.png" alt="Nila Bake House logo" width="66" height="50">
+            </picture>
+            <span class="brand-text">
+                <span class="brand-name">Nila Bake House</span>
+                <span class="brand-tag">Fresh Cakes &amp; Bakes · Koppam</span>
+            </span>
+        </a>
+
+        <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mainNav">
+            <span></span><span></span><span></span>
         </button>
-        <div class="collapse navbar-collapse" id="mainNavbar">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#menu">Menu</a></li>
-                <li class="nav-item"><a class="nav-link" href="#order">Order</a></li>
-                <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+
+        <nav class="main-nav" id="mainNav" aria-label="Main">
+            <a href="#home" class="nav-link">Home</a>
+            <a href="#menu" class="nav-link">Menu</a>
+            <a href="#occasions" class="nav-link">Occasions</a>
+            <a href="#about" class="nav-link">About</a>
+            <a href="#contact" class="nav-link">Contact</a>
+            <a href="#order" class="btn btn-primary btn-sm nav-cta"><i class="bi bi-bag-heart"></i> Order Now</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+
+<!-- Hero -->
+<section id="home" class="hero">
+    <div class="container hero-grid">
+        <div class="hero-copy reveal">
+            <span class="eyebrow"><i class="bi bi-star-fill"></i> Freshly baked, made with love</span>
+            <h1>Welcome to <span class="brand-accent">Nila Bake House</span></h1>
+            <p class="lead">
+                Homemade cakes, pastries, and snacks baked fresh every day.
+                Place your order directly on WhatsApp and enjoy sweet moments with your family and friends.
+            </p>
+            <div class="hero-actions">
+                <a href="#order" class="btn btn-primary btn-lg"><i class="bi bi-bag-heart"></i> Place an Order</a>
+                <a href="https://wa.me/917593836666" target="_blank" rel="noopener" class="btn btn-outline btn-lg">
+                    <i class="bi bi-whatsapp"></i> Chat on WhatsApp
+                </a>
+            </div>
+            <ul class="hero-points">
+                <li><i class="bi bi-check-circle-fill"></i> Baked fresh daily</li>
+                <li><i class="bi bi-check-circle-fill"></i> Custom designs</li>
+                <li><i class="bi bi-check-circle-fill"></i> Easy WhatsApp ordering</li>
             </ul>
         </div>
-    </div>
-</nav>
 
-<!-- Hero Section -->
-<section id="home" class="hero-section">
-    <div class="container">
-        <div class="row align-items-center g-5">
-            <div class="col-md-6">
-                <div class="hero-badge mb-3">
-                    <i class="bi bi-star-fill"></i>
-                    Freshly baked, made with love
-                </div>
-                <h1 class="hero-title mb-3">
-                    Welcome to <span class="text-primary hero-title-brand">Nila Bake House</span>
-                </h1>
-                <p class="lead mb-4">
-                    Homemade cakes, pastries, and snacks baked fresh every day.  
-                    Place your order directly on WhatsApp and enjoy sweet moments with your family and friends.
-                </p>
-                <div class="d-flex flex-wrap gap-2">
-                    <a href="#order" class="btn btn-primary px-4">
-                        <i class="bi bi-bag-heart me-1"></i> Place an Order
-                    </a>
-                    <a href="https://wa.me/917593836666" target="_blank" class="btn btn-outline-primary px-4">
-                        <i class="bi bi-whatsapp me-1"></i> Chat on WhatsApp
-                    </a>
-                </div>
-                <div class="mt-4 small text-muted">
-                    <i class="bi bi-clock-history me-1"></i>
-                    Pre-order at least 1 day in advance for custom cakes.
-                </div>
+        <div class="hero-visual reveal">
+            <div class="hero-disc" aria-hidden="true"></div>
+            <div class="hero-card">
+                <picture>
+                    <source srcset="assets/cake/web/black-forest.webp" type="image/webp">
+                    <img src="assets/cake/black-forest.png" alt="Black Forest cake from Nila Bake House" width="900" height="600">
+                </picture>
             </div>
-            <div class="col-md-6 text-center">
-                <img src="assets/cake/black-forest.png"
-                     alt="Signature Cake" class="img-fluid hero-image rounded-4 shadow-sm bg-white">
+            <div class="hero-chip chip-top">
+                <i class="bi bi-award-fill"></i>
+                <div><strong>Signature</strong><span>Black Forest</span></div>
             </div>
+            <div class="hero-chip chip-bottom">
+                <i class="bi bi-cake2-fill"></i>
+                <div><strong>From ₹600</strong><span>per kg</span></div>
+            </div>
+        </div>
+    </div>
+    <svg class="wave-divider" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,40 C240,90 480,0 720,30 C960,60 1200,10 1440,45 L1440,90 L0,90 Z"></path>
+    </svg>
+</section>
+
+<!-- Highlights -->
+<section class="highlights" aria-label="Why choose us">
+    <div class="container highlight-grid">
+        <div class="highlight reveal">
+            <span class="icon-badge"><i class="bi bi-emoji-smile"></i></span>
+            <div><h3>Homemade Taste</h3><p>Recipes inspired by home-style baking.</p></div>
+        </div>
+        <div class="highlight reveal">
+            <span class="icon-badge"><i class="bi bi-basket2"></i></span>
+            <div><h3>Fresh Every Day</h3><p>Baked in small batches for better freshness.</p></div>
+        </div>
+        <div class="highlight reveal">
+            <span class="icon-badge"><i class="bi bi-calendar-heart"></i></span>
+            <div><h3>Custom Cakes</h3><p>Personalised designs for your special days.</p></div>
+        </div>
+        <div class="highlight reveal">
+            <span class="icon-badge"><i class="bi bi-geo-alt"></i></span>
+            <div><h3>Local Bakery</h3><p>Serving the neighbourhood with care and warmth.</p></div>
         </div>
     </div>
 </section>
 
-<!-- Menu Section -->
-<section id="menu" class="py-5">
+<!-- Menu -->
+<section id="menu" class="section">
     <div class="container">
-        <div class="text-center mb-4">
-            <h2 class="section-title">Our Special Cakes</h2>
-            <p class="section-subtitle mx-auto">
-                Choose from our most loved flavours. All prices mentioned are per kilogram.
-            </p>
-            <p class="text-muted" style="font-size: 11px; margin-top: 4px;">
-                *Disclaimer: Actual cake design may vary slightly from the images shown.
-            </p>
+        <div class="section-head reveal">
+            <span class="eyebrow">Our Menu</span>
+            <h2>Our Special Cakes</h2>
+            <p>Choose from our most loved flavours. All prices mentioned are per kilogram.</p>
         </div>
 
-        <!-- Dynamic cake list will be injected here -->
-        <div id="cake-list" class="row g-4">
-            <div class="col-12 text-center text-muted small">
-                Loading cakes...
-            </div>
+        <!-- Cards are built from assets/data/cakes.csv -->
+        <div id="cake-list" class="cake-grid" aria-live="polite">
+            <p class="cake-status">Loading cakes…</p>
         </div>
+
+        <p class="disclaimer">*Disclaimer: Actual cake design may vary slightly from the images shown.</p>
     </div>
 </section>
 
-<!-- Order Section -->
-<section id="order" class="py-5 bg-light">
+<!-- Occasions -->
+<section id="occasions" class="section section-tint">
     <div class="container">
-        <div class="row g-4 align-items-start">
-            <div class="col-lg-6">
-                <h2 class="section-title mb-3">Place Your Order</h2>
-                <p class="section-subtitle">
-                    Fill this form and we’ll prepare a WhatsApp message with all the details.  
-                    You can review and send it directly to Nila Bake House.
-                </p>
+        <div class="section-head reveal">
+            <span class="eyebrow">Celebrations</span>
+            <h2>Cakes for Every Occasion</h2>
+            <p>We take custom orders for theme cakes, kids' birthday cakes, and bulk snack orders for offices, schools, and family functions.</p>
+        </div>
+        <div class="occasion-grid">
+            <a class="occasion-card reveal" href="#order" data-order-item="Custom Cake">
+                <picture>
+                    <source srcset="assets/images/web/birthday-header.webp" type="image/webp">
+                    <img src="assets/images/birthday-header.png" alt="Birthday cake with a candle" loading="lazy" width="1200" height="800">
+                </picture>
+                <div class="occasion-body">
+                    <h3>Birthday Cakes</h3>
+                    <p>Kids' themes, photo cakes, and your favourite flavours.</p>
+                    <span class="link-arrow">Order a birthday cake <i class="bi bi-arrow-right"></i></span>
+                </div>
+            </a>
+            <a class="occasion-card reveal" href="#order" data-order-item="Custom Cake">
+                <picture>
+                    <source srcset="assets/images/web/anniversary-header.webp" type="image/webp">
+                    <img src="assets/images/anniversary-header.png" alt="Anniversary cake with candles" loading="lazy" width="1200" height="800">
+                </picture>
+                <div class="occasion-body">
+                    <h3>Anniversary Specials</h3>
+                    <p>Elegant cakes to celebrate the years together.</p>
+                    <span class="link-arrow">Order an anniversary cake <i class="bi bi-arrow-right"></i></span>
+                </div>
+            </a>
+        </div>
 
-                <form id="orderForm" class="mt-3">
-                    <div class="mb-3">
-                        <label for="customerName" class="form-label">Your Name</label>
-                        <input type="text" class="form-control" id="customerName" placeholder="Enter your full name" required>
+        <!-- How it works -->
+        <ol class="steps">
+            <li class="step reveal">
+                <span class="step-num">1</span>
+                <h3>Pick your cake</h3>
+                <p>Browse the menu or tell us your custom design idea.</p>
+            </li>
+            <li class="step reveal">
+                <span class="step-num">2</span>
+                <h3>Send on WhatsApp</h3>
+                <p>Fill the order form and we'll prepare the message for you.</p>
+            </li>
+            <li class="step reveal">
+                <span class="step-num">3</span>
+                <h3>Enjoy fresh</h3>
+                <p>We confirm, bake fresh, and have it ready for pick-up or delivery.</p>
+            </li>
+        </ol>
+    </div>
+</section>
+
+<!-- Order -->
+<section id="order" class="section">
+    <div class="container order-grid">
+        <div class="order-form-wrap reveal">
+            <span class="eyebrow">Order Online</span>
+            <h2>Place Your Order</h2>
+            <p class="muted">
+                Fill this form and we’ll prepare a WhatsApp message with all the details.
+                You can review and send it directly to Nila Bake House.
+            </p>
+
+            <form id="orderForm" class="order-form" novalidate>
+                <div class="field-row">
+                    <div class="field">
+                        <label for="customerName">Your Name</label>
+                        <input type="text" id="customerName" placeholder="Enter your full name" autocomplete="name" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="customerPhone" class="form-label">Your Phone Number</label>
-                        <input type="tel" class="form-control" id="customerPhone" placeholder="For order confirmation" required>
+                    <div class="field">
+                        <label for="customerPhone">Your Phone Number</label>
+                        <input type="tel" id="customerPhone" placeholder="10-digit mobile number" autocomplete="tel" inputmode="numeric" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="orderItem" class="form-label">What would you like to order?</label>
-                        <select id="orderItem" class="form-select" required>
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label for="orderItem">What would you like to order?</label>
+                        <select id="orderItem" required>
                             <option value="" selected disabled>Select an item</option>
                             <!-- Cake options will be added from cakes.csv -->
                         </select>
                     </div>
-                    <div class="mb-3">
-                        <label for="quantity" class="form-label">Quantity / Weight</label>
-                        <input type="text" class="form-control" id="quantity" placeholder="e.g., 1kg, 2kg, 2 cakes" required>
+                    <div class="field">
+                        <label for="quantity">Quantity / Weight</label>
+                        <input type="text" id="quantity" placeholder="e.g., 1kg, 2kg, 2 cakes" required>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Preferred Date & Time</label>
-                        <div class="row g-2">
-                            <div class="col-6">
-                                <input type="date" class="form-control" id="pickupDate">
-                            </div>
-                            <div class="col-6">
-                                <input type="time" class="form-control" id="pickupTime">
-                            </div>
-                        </div>
-                        <div class="form-text">You can leave this empty if you're not sure yet.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="extraNotes" class="form-label">Special Instructions (optional)</label>
-                        <textarea id="extraNotes" class="form-control" rows="3" placeholder="Write message on cake, eggless, design idea, etc."></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary px-4">
-                        <i class="bi bi-whatsapp me-1"></i> Send Order on WhatsApp
-                    </button>
-                    <p class="small text-muted mt-2">
-                        You will be redirected to WhatsApp with a pre-filled message. Please review and send it.
-                    </p>
-                </form>
-            </div>
-            <div class="col-lg-6">
-                <div class="bg-white p-4 rounded-4 shadow-sm">
-                    <h5 class="mb-3"><i class="bi bi-info-circle me-2"></i>Order Guidelines</h5>
-                    <ul class="mb-0 small">
-                        <li>Custom cakes: please order at least <strong>24–48 hours</strong> in advance.</li>
-                        <li>Same-day orders are subject to availability.</li>
-                        <li>Please mention any <strong>allergies</strong> (nuts, eggs, etc.) in the instructions.</li>
-                        <li>Delivery options depend on location, otherwise pick-up from shop.</li>
-                    </ul>
                 </div>
-            </div>
+                <div class="field">
+                    <label>Preferred Date &amp; Time</label>
+                    <div class="field-row tight">
+                        <input type="date" id="pickupDate" aria-label="Preferred date">
+                        <input type="time" id="pickupTime" aria-label="Preferred time">
+                    </div>
+                    <small class="hint">You can leave this empty if you're not sure yet.</small>
+                </div>
+                <div class="field">
+                    <label for="extraNotes">Special Instructions <span class="optional">(optional)</span></label>
+                    <textarea id="extraNotes" rows="3" placeholder="Write message on cake, eggless, design idea, etc."></textarea>
+                </div>
+                <p class="form-error" id="formError" role="alert" hidden></p>
+                <button type="submit" class="btn btn-whatsapp btn-lg btn-block">
+                    <i class="bi bi-whatsapp"></i> Send Order on WhatsApp
+                </button>
+                <p class="hint center">You will be redirected to WhatsApp with a pre-filled message. Please review and send it.</p>
+            </form>
         </div>
+
+        <aside class="order-aside reveal">
+            <div class="info-card">
+                <h3><i class="bi bi-info-circle"></i> Order Guidelines</h3>
+                <ul class="check-list">
+                    <li>Custom cakes: please order at least <strong>24–48 hours</strong> in advance.</li>
+                    <li>Same-day orders are subject to availability.</li>
+                    <li>Please mention any <strong>allergies</strong> (nuts, eggs, etc.) in the instructions.</li>
+                    <li>Delivery options depend on location, otherwise pick-up from shop.</li>
+                </ul>
+            </div>
+            <div class="info-card info-card-blue">
+                <h3><i class="bi bi-chat-heart"></i> Prefer to talk?</h3>
+                <p>Reach out on WhatsApp for any queries, custom designs, or bulk orders.</p>
+                <a href="https://wa.me/917593836666" target="_blank" rel="noopener" class="btn btn-light">
+                    <i class="bi bi-whatsapp"></i> +91 75938 36666
+                </a>
+            </div>
+        </aside>
     </div>
 </section>
 
-<!-- About Section -->
-<section id="about" class="py-5">
-    <div class="container">
-        <div class="row g-4 align-items-center">
-            <div class="col-lg-6">
-                <h2 class="section-title mb-3">About Nila Bake House</h2>
-                <p class="section-subtitle">
-                    Nila Bake House is a cozy home-town bakery started with a simple idea –  
-                    to bring fresh, homemade taste to every celebration.
-                </p>
-                <p>
-                    From birthday cakes and anniversary specials to festival treats and tea-time snacks,  
-                    every item is baked in small batches using quality ingredients and a lot of love.
-                </p>
-                <p>
-                    We also take custom orders for theme cakes, kids' birthday cakes, and bulk snack orders for  
-                    offices, schools, and family functions.
-                </p>
-            </div>
-            <div class="col-lg-6">
-                <div class="row g-3">
-                    <div class="col-6">
-                        <div class="border rounded-4 p-3 h-100 text-center">
-                            <i class="bi bi-emoji-smile fs-1 text-primary mb-2"></i>
-                            <h6 class="fw-semibold">Homemade Taste</h6>
-                            <p class="small text-muted mb-0">Recipes inspired by home-style baking.</p>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="border rounded-4 p-3 h-100 text-center">
-                            <i class="bi bi-basket2 fs-1 text-primary mb-2"></i>
-                            <h6 class="fw-semibold">Fresh Every Day</h6>
-                            <p class="small text-muted mb-0">Baked in small batches for better freshness.</p>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="border rounded-4 p-3 h-100 text-center">
-                            <i class="bi bi-calendar-heart fs-1 text-primary mb-2"></i>
-                            <h6 class="fw-semibold">Custom Cakes</h6>
-                            <p class="small text-muted mb-0">Personalised designs for your special days.</p>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="border rounded-4 p-3 h-100 text-center">
-                            <i class="bi bi-geo-alt fs-1 text-primary mb-2"></i>
-                            <h6 class="fw-semibold">Local Bakery</h6>
-                            <p class="small text-muted mb-0">Serving the neighbourhood with care and warmth.</p>
-                        </div>
-                    </div>
-                </div>
+<!-- About -->
+<section id="about" class="section section-tint">
+    <div class="container about-grid">
+        <div class="about-visual reveal">
+            <picture>
+                <source srcset="assets/cake/web/red-velvet.webp" type="image/webp">
+                <img src="assets/cake/red-velvet.png" alt="Red Velvet cake" loading="lazy" width="900" height="600">
+            </picture>
+            <div class="about-logo">
+                <picture>
+                    <source srcset="assets/images/web/nila-logo.webp" type="image/webp">
+                    <img src="assets/images/web/nila-logo.png" alt="" loading="lazy" width="120" height="90">
+                </picture>
             </div>
         </div>
-    </div>
-</section>
-
-<!-- Contact Section -->
-<section id="contact" class="py-5 bg-light">
-    <div class="container">
-        <div class="text-center mb-4">
-            <h2 class="section-title">Contact & Location</h2>
-            <p class="section-subtitle mx-auto">
-                Reach out on WhatsApp for any queries, custom designs, or bulk orders.
+        <div class="about-copy reveal">
+            <span class="eyebrow">Our Story</span>
+            <h2>About Nila Bake House</h2>
+            <p class="lead">
+                Nila Bake House is a cozy home-town bakery started with a simple idea –
+                to bring fresh, homemade taste to every celebration.
             </p>
+            <p>
+                From birthday cakes and anniversary specials to festival treats and tea-time snacks,
+                every item is baked in small batches using quality ingredients and a lot of love.
+            </p>
+            <p>
+                We also take custom orders for theme cakes, kids' birthday cakes, and bulk snack orders for
+                offices, schools, and family functions.
+            </p>
+            <a href="#menu" class="btn btn-primary"><i class="bi bi-cake2"></i> Explore the menu</a>
         </div>
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-5">
-                <div class="bg-white p-4 rounded-4 shadow-sm h-100">
-                    <h5 class="mb-3"><i class="bi bi-telephone me-2"></i>Contact</h5>
-                    <p class="mb-1">
-                        <strong>Phone / WhatsApp:</strong>
-                        <a href="https://wa.me/917593836666" target="_blank">+91 75938 36666</a>
-                    </p>
-                    <p class="mb-1">
-                        <strong>Email:</strong>
+    </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="section">
+    <div class="container">
+        <div class="section-head reveal">
+            <span class="eyebrow">Visit Us</span>
+            <h2>Contact &amp; Location</h2>
+            <p>Reach out on WhatsApp for any queries, custom designs, or bulk orders.</p>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-card reveal">
+                <div class="contact-item">
+                    <span class="icon-badge"><i class="bi bi-whatsapp"></i></span>
+                    <div>
+                        <h3>Phone / WhatsApp</h3>
+                        <a href="https://wa.me/917593836666" target="_blank" rel="noopener">+91 75938 36666</a>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <span class="icon-badge"><i class="bi bi-envelope"></i></span>
+                    <div>
+                        <h3>Email</h3>
                         <a href="mailto:nilabakehousekoppam@gmail.com">nilabakehousekoppam@gmail.com</a>
-                    </p>
-                    <p class="mb-0"><strong>Instagram:</strong> @nilabakehousekoppam</p>
-
-                    <hr class="my-4">
-
-                    <h5 class="mb-3"><i class="bi bi-geo-alt me-2"></i>Address</h5>
-                    <p class="mb-1">Nila Bake House</p>
-                    <p class="mb-1">Koppam, Muthuthala</p>
-                    <p class="mb-1">Kerala, India</p>
-                    <p class="mb-0">PIN 679 307, 679 303</p>
-                    
-                    <hr class="my-4">
-
-                    <h6 class="mb-1">Timings</h6>
-                    <p class="mb-0 small text-muted">
-                        Mon – Sun: 9:00 AM – 9:00 PM  
-                        (Custom cake orders accepted for early morning deliveries)
-                    </p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <span class="icon-badge"><i class="bi bi-instagram"></i></span>
+                    <div>
+                        <h3>Instagram</h3>
+                        <a href="https://www.instagram.com/nilabakehousekoppam/" target="_blank" rel="noopener">@nilabakehousekoppam</a>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <span class="icon-badge"><i class="bi bi-geo-alt"></i></span>
+                    <div>
+                        <h3>Address</h3>
+                        <p>Nila Bake House<br>Koppam, Muthuthala<br>Kerala, India<br>PIN 679 307, 679 303</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <span class="icon-badge"><i class="bi bi-clock"></i></span>
+                    <div>
+                        <h3>Timings</h3>
+                        <p>Mon – Sun: 9:00 AM – 9:00 PM<br>
+                        <small class="muted">(Custom cake orders accepted for early morning deliveries)</small></p>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-md-6 col-lg-7">
-                <div class="h-100 rounded-4 overflow-hidden shadow-sm bg-white">
-                    <iframe
-                        src="https://www.google.com/maps?q=V57P+XQ%20Koppam,%20Kerala,%20India&output=embed"
-                        width="100%"
-                        height="350"
-                        style="border:0;"
-                        allowfullscreen=""
-                        loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade">
-                    </iframe>
-                </div>
+            <div class="map-card reveal">
+                <iframe
+                    title="Nila Bake House on Google Maps"
+                    src="https://www.google.com/maps?q=V57P+XQ%20Koppam,%20Kerala,%20India&output=embed"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
             </div>
         </div>
     </div>
 </section>
+
+<!-- Call to action -->
+<section class="cta-band">
+    <div class="container cta-inner reveal">
+        <div>
+            <h2>Planning a celebration?</h2>
+            <p>Tell us your idea and we'll bake it fresh for your special day.</p>
+        </div>
+        <div class="cta-actions">
+            <a href="#order" class="btn btn-light btn-lg"><i class="bi bi-bag-heart"></i> Place an Order</a>
+            <a href="https://wa.me/917593836666" target="_blank" rel="noopener" class="btn btn-ghost btn-lg"><i class="bi bi-whatsapp"></i> Chat with us</a>
+        </div>
+    </div>
+</section>
+
+</main>
 
 <!-- Footer -->
-<footer class="footer py-3">
-    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
-        <p class="mb-1 mb-md-0 small">
-            © <span id="year"></span> Nila Bake House. All rights reserved.
-        </p>
-        <p class="mb-0 small">
-            Made with <i class="bi bi-heart-fill text-danger"></i> for our home town.
-        </p>
+<footer class="footer">
+    <div class="container footer-grid">
+        <div class="footer-brand">
+            <picture>
+                <source srcset="assets/images/web/nila-logo.webp" type="image/webp">
+                <img src="assets/images/web/nila-logo.png" alt="Nila Bake House logo" loading="lazy" width="80" height="60">
+            </picture>
+            <p>Homemade cakes, pastries, and snacks baked fresh every day in Koppam, Kerala.</p>
+        </div>
+        <div>
+            <h4>Explore</h4>
+            <ul>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#occasions">Occasions</a></li>
+                <li><a href="#order">Order</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Contact</h4>
+            <ul>
+                <li><a href="https://wa.me/917593836666" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i> +91 75938 36666</a></li>
+                <li><a href="mailto:nilabakehousekoppam@gmail.com"><i class="bi bi-envelope"></i> Email us</a></li>
+                <li><a href="https://www.instagram.com/nilabakehousekoppam/" target="_blank" rel="noopener"><i class="bi bi-instagram"></i> @nilabakehousekoppam</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Hours</h4>
+            <ul>
+                <li>Mon – Sun</li>
+                <li>9:00 AM – 9:00 PM</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container footer-bottom">
+        <p>© <span id="year"></span> Nila Bake House. All rights reserved.</p>
+        <p>Made with <i class="bi bi-heart-fill heart"></i> for our home town.</p>
     </div>
 </footer>
 
 <!-- Floating WhatsApp Button -->
-<div class="whatsapp-float">
-    <a href="https://wa.me/917593836666" target="_blank" class="btn btn-success shadow-lg">
-        <i class="bi bi-whatsapp me-1"></i> Chat with us
-    </a>
-</div>
+<a href="https://wa.me/917593836666" target="_blank" rel="noopener" class="whatsapp-float" aria-label="Chat with us on WhatsApp">
+    <i class="bi bi-whatsapp"></i><span>Chat with us</span>
+</a>
 
-<!-- Bootstrap JS Bundle -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<script>
-    // Load cake data from CSV and render cards + dropdown
-    document.addEventListener("DOMContentLoaded", function () {
-        const cakeListEl = document.getElementById("cake-list");
-        const orderItemSelect = document.getElementById("orderItem");
-
-        if (!cakeListEl) return;
-
-        // Cache-buster so browser always gets latest CSV
-        const csvUrl = "assets/data/cakes.csv?_=" + Date.now();
-
-        fetch(csvUrl)
-            .then(function (response) {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                return response.text();
-            })
-            .then(function (csvText) {
-                const lines = csvText.split(/\r?\n/).filter(line => line.trim() !== "");
-                if (lines.length <= 1) {
-                    cakeListEl.innerHTML = `
-                        <div class="col-12 text-center text-muted small">
-                            No cakes to display right now.
-                        </div>
-                    `;
-                    return;
-                }
-
-                cakeListEl.innerHTML = "";
-
-                // Keep the first "Select an item" option, clear the rest
-                if (orderItemSelect) {
-                    const firstOption = orderItemSelect.querySelector("option");
-                    orderItemSelect.innerHTML = "";
-                    if (firstOption) {
-                        orderItemSelect.appendChild(firstOption);
-                    }
-                }
-
-                // Start from 1 to skip header row
-                for (let i = 1; i < lines.length; i++) {
-                    const rawLine = lines[i];
-                    if (!rawLine.trim()) continue;
-
-                    const parts = rawLine.split(",");
-                    if (parts.length < 4) continue;
-
-                    const name = parts[0].trim();
-                    const price = parts[1].trim();
-                    const image = parts[parts.length - 1].trim();
-                    const description = parts.slice(2, parts.length - 1).join(",").trim();
-
-                    if (!name) continue;
-
-                    // Create cake card
-                    const col = document.createElement("div");
-                    col.className = "col-md-4";
-
-                    col.innerHTML = `
-                        <div class="card product-card h-100">
-                            <img src="assets/cake/${image}" class="card-img-top" alt="${name}">
-                            <div class="card-body">
-                                <h5 class="card-title">${name}</h5>
-                                <p class="card-text small text-muted mb-2">
-                                    ${description}
-                                </p>
-                                <p class="fw-semibold mb-0">
-                                    ${price}
-                                </p>
-                            </div>
-                        </div>
-                    `;
-                    cakeListEl.appendChild(col);
-
-                    // Add to order dropdown
-                    if (orderItemSelect) {
-                        const opt = document.createElement("option");
-                        opt.value = name;
-                        opt.textContent = name;
-                        orderItemSelect.appendChild(opt);
-                    }
-                }
-
-                // Add "Custom Cake" option manually at end
-                if (orderItemSelect) {
-                    const customOpt = document.createElement("option");
-                    customOpt.value = "Custom Cake";
-                    customOpt.textContent = "Custom Cake (theme / photo etc.)";
-                    orderItemSelect.appendChild(customOpt);
-                }
-            })
-            .catch(function (error) {
-                console.error("Error loading cakes.csv:", error);
-                cakeListEl.innerHTML = `
-                    <div class="col-12 text-center text-danger small">
-                        Unable to load cake menu at the moment. Please try again later.
-                    </div>
-                `;
-            });
-    });
-</script>
-
-<script>
-    // Update footer year
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    const orderForm = document.getElementById('orderForm');
-
-    if (orderForm) {
-        orderForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const name = document.getElementById('customerName').value.trim();
-            const phone = document.getElementById('customerPhone').value.trim();
-            const item = document.getElementById('orderItem').value;
-            const quantity = document.getElementById('quantity').value.trim();
-
-            const pickupDate = document.getElementById('pickupDate').value;
-            const pickupTimeRaw = document.getElementById('pickupTime').value;
-            const notes = document.getElementById('extraNotes').value.trim();
-
-            const bakeryWhatsApp = "917593836666";
-
-            // MOBILE NUMBER VALIDATION – must be 10 digits
-            const phoneOnlyDigits = phone.replace(/\D/g, "");
-            if (phoneOnlyDigits.length !== 10) {
-                alert("Please enter a valid 10-digit mobile number.");
-                return;
-            }
-
-            // TIME → AM/PM conversion
-            let pickupTime = "";
-            if (pickupTimeRaw) {
-                let [hour, minute] = pickupTimeRaw.split(":");
-                hour = parseInt(hour, 10);
-
-                let ampm = hour >= 12 ? "PM" : "AM";
-                let convertedHour = hour % 12 || 12;
-
-                pickupTime = `${convertedHour}:${minute} ${ampm}`;
-            }
-
-            // BUILD MESSAGE
-            let message = "";
-            message += `New order request from ${name}\n`;
-            message += `Phone: ${phoneOnlyDigits}\n`;
-            message += `Item: ${item}\n`;
-            message += `Quantity/Weight: ${quantity}\n`;
-
-            let dateTimeText = "Not specified";
-            if (pickupDate || pickupTime) {
-                dateTimeText = "";
-                if (pickupDate) dateTimeText += pickupDate;
-                if (pickupTime) dateTimeText += (dateTimeText ? " " : "") + pickupTime;
-            }
-
-            message += `Preferred Date & Time: ${dateTimeText}\n`;
-
-            if (notes) {
-                message += `Special Instructions: ${notes}\n`;
-            }
-
-            message += `\nPlease confirm availability and price.`;
-
-            const encodedMessage = encodeURIComponent(message);
-            const url = `https://wa.me/${bakeryWhatsApp}?text=${encodedMessage}`;
-
-            window.open(url, "_blank");
-        });
-    }
-</script>
+<script src="assets/js/main.js"></script>
 
 <!--
-REMINDERS:
-1. Put your logo at: assets/images/nila-logo.png
-2. Put cake images in: assets/cake/ with the filenames used above.
+HOW TO UPDATE THE MENU:
+1. Edit assets/data/cakes.csv (name,price,description,image).
+2. Put the cake photo in assets/cake/ with the same filename as the "image" column.
+3. Optional: add a smaller, faster copy at assets/cake/web/<name>.webp.
+   If it is missing, the site automatically uses the original photo.
 -->
 
 </body>
