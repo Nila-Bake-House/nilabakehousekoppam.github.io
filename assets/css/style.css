@@ -495,7 +495,7 @@ input.invalid, select.invalid { border-color: #e04f4f; }
 
     .hero { padding: 48px 0 100px; }
     .hero-grid { grid-template-columns: 1fr; gap: 40px; }
-    .hero-visual { min-height: 360px; }
+    .hero-visual { min-height: 360px; order: -1; }
 
     .order-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; }
     .order-aside { position: static; }
