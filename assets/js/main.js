@@ -105,6 +105,7 @@
         var base = cake.image.replace(/\.[^.]+$/, "");
         var col = document.createElement("article");
         col.className = "cake-card reveal";
+        col.setAttribute("data-tilt", "");
         col.innerHTML =
             '<div class="cake-media">' +
                 '<img src="assets/cake/web/' + encodeURI(base) + '.webp" ' +
@@ -283,6 +284,65 @@
             var url = "https://wa.me/" + BAKERY_WHATSAPP + "?text=" + encodeURIComponent(message);
             window.open(url, "_blank");
         });
+    }
+
+    /* ---------- 3D tilt on cards (mouse / pen only) ---------- */
+    var canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (canHover && !reduceMotion) {
+        var tiltEl = null, tiltFrame = 0, tiltEvt = null;
+
+        function applyTilt() {
+            tiltFrame = 0;
+            if (!tiltEl || !tiltEvt) return;
+            var r = tiltEl.getBoundingClientRect();
+            var x = (tiltEvt.clientX - r.left) / r.width;   // 0 → 1
+            var y = (tiltEvt.clientY - r.top) / r.height;
+            var max = tiltEl.getAttribute("data-tilt") === "soft" ? 5 : 9;
+            tiltEl.style.setProperty("--ry", ((x - 0.5) * 2 * max).toFixed(2) + "deg");
+            tiltEl.style.setProperty("--rx", ((0.5 - y) * 2 * max).toFixed(2) + "deg");
+            tiltEl.style.setProperty("--tx", ((x - 0.5) * 2).toFixed(3));
+            tiltEl.style.setProperty("--ty", ((y - 0.5) * 2).toFixed(3));
+            tiltEl.style.setProperty("--mx", (x * 100).toFixed(1) + "%");
+            tiltEl.style.setProperty("--my", (y * 100).toFixed(1) + "%");
+        }
+        function resetTilt(el) {
+            el.classList.remove("tilting");
+            ["--rx", "--ry", "--tx", "--ty", "--mx", "--my"].forEach(function (p) { el.style.removeProperty(p); });
+        }
+
+        document.addEventListener("pointermove", function (e) {
+            if (e.pointerType === "touch") return;
+            var el = e.target.closest && e.target.closest("[data-tilt]");
+            if (el !== tiltEl) {
+                if (tiltEl) resetTilt(tiltEl);
+                tiltEl = el;
+                if (el) el.classList.add("tilting");
+            }
+            if (!el) return;
+            tiltEvt = e;
+            if (!tiltFrame) tiltFrame = requestAnimationFrame(applyTilt);
+        }, { passive: true });
+        document.addEventListener("pointerleave", function () {
+            if (tiltEl) resetTilt(tiltEl);
+            tiltEl = null;
+        });
+
+        // Hero depth: chips and disc drift with the pointer
+        var hero = document.querySelector(".hero");
+        var heroVisual = document.querySelector(".hero-visual");
+        if (hero && heroVisual) {
+            hero.addEventListener("pointermove", function (e) {
+                var r = hero.getBoundingClientRect();
+                heroVisual.style.setProperty("--px", (((e.clientX - r.left) / r.width) * 2 - 1).toFixed(3));
+                heroVisual.style.setProperty("--py", (((e.clientY - r.top) / r.height) * 2 - 1).toFixed(3));
+            }, { passive: true });
+            hero.addEventListener("pointerleave", function () {
+                heroVisual.style.setProperty("--px", 0);
+                heroVisual.style.setProperty("--py", 0);
+            });
+        }
     }
 
     /* ---------- Footer year ---------- */
