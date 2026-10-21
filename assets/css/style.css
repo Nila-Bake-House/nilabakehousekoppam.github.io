@@ -462,7 +462,7 @@ input.invalid, select.invalid { border-color: #e04f4f; }
 .whatsapp-float:hover { color: #fff; background: var(--whatsapp-dark); transform: translateY(-3px); }
 
 /* ---------- Scroll reveal ---------- */
-.js .reveal { opacity: 0; transform: perspective(900px) translateY(26px) rotateX(10deg); transform-origin: 50% 100%; transition: opacity .7s ease, transform .7s ease; }
+.js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
 .js .reveal.visible { opacity: 1; transform: none; }
 
 /* ---------- 3D ---------- */
@@ -492,41 +492,6 @@ input.invalid, select.invalid { border-color: #e04f4f; }
 .hero-flavour:focus-visible { outline: 3px solid var(--nila-indigo); outline-offset: 2px; }
 .hero-flavour i { transition: transform .4s; }
 .hero-flavour:hover i { transform: rotate(180deg); }
-
-/* Tilt cards: the pointer position sets --rx / --ry (see main.js) */
-.js .reveal[data-tilt].visible {
-    transform: perspective(900px) translateY(var(--lift, 0px)) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-    transform-origin: 50% 50%;
-    transition: opacity .7s ease, transform .5s cubic-bezier(.2, .8, .2, 1), box-shadow .3s, border-color .3s;
-    will-change: transform;
-}
-.js .reveal[data-tilt].visible.tilting {
-    --lift: -6px;
-    transition: opacity .7s ease, transform .12s ease-out, box-shadow .3s, border-color .3s;
-}
-.cake-card.tilting, .occasion-card.tilting, .step.tilting { box-shadow: var(--shadow-lg); border-color: transparent; }
-.cake-card:hover { transform: none; }
-
-/* shine that follows the pointer */
-.cake-card::after, .occasion-card::after {
-    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .3s;
-    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, .38), transparent 55%);
-}
-.cake-card { position: relative; }
-.cake-card.tilting::after, .occasion-card.tilting::after { opacity: 1; }
-
-/* photo shifts opposite to the tilt for depth */
-.cake-card.tilting .cake-media img {
-    transform: scale(1.1) translate(calc(var(--tx, 0) * -10px), calc(var(--ty, 0) * -8px));
-    transition: transform .12s ease-out;
-}
-.cake-card.tilting .price-tag { transform: translate(calc(var(--tx, 0) * 4px), calc(var(--ty, 0) * 3px)); }
-
-.about-visual.tilting > picture img { box-shadow: 0 36px 70px rgba(16, 52, 99, .26); }
-.about-logo { transition: transform .12s ease-out; }
-.about-visual.tilting .about-logo { transform: translate(calc(var(--tx, 0) * 10px), calc(var(--ty, 0) * 8px)); }
-
-.step-num { box-shadow: 0 6px 0 #2a2a6e, 0 10px 18px rgba(63, 63, 149, .35); }
 
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
