@@ -432,7 +432,8 @@ import * as THREE from "./vendor/three.module.min.js";
     function updateSprinkles(t) {
         for (var i = 0; i < SPR; i++) {
             var d = sprData[i], a = d.a + t * d.sp;
-            dummy.position.set(Math.cos(a) * d.r, d.y + Math.sin(t * 0.8 + d.bob) * 0.15, Math.sin(a) * d.r);
+            // swing around the back half only, so nothing ever floats in front of the cake
+            dummy.position.set(Math.cos(a) * d.r, d.y + Math.sin(t * 0.8 + d.bob) * 0.15, -Math.abs(Math.sin(a)) * d.r * 0.9 - 0.4);
             dummy.rotation.set(d.rx + t * d.rs, d.ry + t * d.rs * 0.7, 0);
             dummy.scale.set(1, 1, 1);
             dummy.updateMatrix();
