@@ -130,12 +130,12 @@
                 <i class="bi bi-award-fill"></i>
                 <div><strong id="flavourLabel">Signature</strong><span id="flavourName">Black Forest</span></div>
             </div>
-            <button type="button" class="hero-flavour" id="flavourBtn" hidden title="Drag the cake to spin it">
-                <i class="bi bi-arrow-repeat"></i> Change flavour
+            <button type="button" class="hero-flavour" id="flavourBtn" hidden title="Drag the cake to spin it, tap it for the next cake">
+                <i class="bi bi-arrow-repeat"></i> Next cake
             </button>
             <div class="hero-chip chip-bottom">
                 <i class="bi bi-cake2-fill"></i>
-                <div><strong>From ₹600</strong><span>per kg</span></div>
+                <div><strong id="priceMain">From ₹600</strong><span id="priceUnit">per kg</span></div>
             </div>
         </div>
     </div>
@@ -193,7 +193,7 @@
             <p>We take custom orders for theme cakes, kids' birthday cakes, and bulk snack orders for offices, schools, and family functions.</p>
         </div>
         <div class="occasion-grid">
-            <a class="occasion-card reveal" data-tilt href="#order" data-order-item="Custom Cake">
+            <a class="occasion-card reveal" href="#order" data-order-item="Custom Cake">
                 <picture>
                     <source srcset="assets/images/web/birthday-header.webp" type="image/webp">
                     <img src="assets/images/birthday-header.png" alt="Birthday cake with a candle" loading="lazy" width="1200" height="800">
@@ -204,7 +204,7 @@
                     <span class="link-arrow">Order a birthday cake <i class="bi bi-arrow-right"></i></span>
                 </div>
             </a>
-            <a class="occasion-card reveal" data-tilt href="#order" data-order-item="Custom Cake">
+            <a class="occasion-card reveal" href="#order" data-order-item="Custom Cake">
                 <picture>
                     <source srcset="assets/images/web/anniversary-header.webp" type="image/webp">
                     <img src="assets/images/anniversary-header.png" alt="Anniversary cake with candles" loading="lazy" width="1200" height="800">
@@ -219,17 +219,17 @@
 
         <!-- How it works -->
         <ol class="steps">
-            <li class="step reveal" data-tilt>
+            <li class="step reveal">
                 <span class="step-num">1</span>
                 <h3>Pick your cake</h3>
                 <p>Browse the menu or tell us your custom design idea.</p>
             </li>
-            <li class="step reveal" data-tilt>
+            <li class="step reveal">
                 <span class="step-num">2</span>
                 <h3>Send on WhatsApp</h3>
                 <p>Fill the order form and we'll prepare the message for you.</p>
             </li>
-            <li class="step reveal" data-tilt>
+            <li class="step reveal">
                 <span class="step-num">3</span>
                 <h3>Enjoy fresh</h3>
                 <p>We confirm, bake fresh, and have it ready for pick-up or delivery.</p>
@@ -317,7 +317,7 @@
 <!-- About -->
 <section id="about" class="section section-tint">
     <div class="container about-grid">
-        <div class="about-visual reveal" data-tilt="soft">
+        <div class="about-visual reveal">
             <picture>
                 <source srcset="assets/cake/web/red-velvet.webp" type="image/webp">
                 <img src="assets/cake/red-velvet.png" alt="Red Velvet cake" loading="lazy" width="900" height="600">
