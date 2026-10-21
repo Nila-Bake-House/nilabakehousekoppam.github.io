@@ -376,7 +376,7 @@ import * as THREE from "./vendor/three.module.min.js";
     var built = {};
     var current = null;
 
-    /* ---------- Stage: cake board, contact shadow, sprinkles ---------- */
+    /* ---------- Stage: cake board and sprinkles ---------- */
     var root = new THREE.Group();
     scene.add(root);
 
@@ -386,24 +386,6 @@ import * as THREE from "./vendor/three.module.min.js";
     var board = new THREE.Mesh(new THREE.CylinderGeometry(2.05, 2.05, 0.03, 80), mat(0xffffff, { roughness: 0.4 }));
     board.position.y = 0.045;
     root.add(board);
-
-    (function () {
-        var c = document.createElement("canvas");
-        c.width = c.height = 128;
-        var g = c.getContext("2d");
-        var grad = g.createRadialGradient(64, 64, 20, 64, 64, 64);
-        grad.addColorStop(0, "rgba(0,40,90,.38)");
-        grad.addColorStop(1, "rgba(0,40,90,0)");
-        g.fillStyle = grad;
-        g.fillRect(0, 0, 128, 128);
-        var shadow = new THREE.Mesh(
-            new THREE.PlaneGeometry(7.4, 7.4),
-            new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(c), transparent: true, depthWrite: false })
-        );
-        shadow.rotation.x = -Math.PI / 2;
-        shadow.position.y = -0.03;
-        root.add(shadow);
-    })();
 
     var cakeSlot = new THREE.Group();
     cakeSlot.position.y = BASE;
