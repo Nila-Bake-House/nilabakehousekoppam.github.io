@@ -471,7 +471,9 @@
 
 <!--
 HOW TO UPDATE THE MENU:
-1. Edit assets/data/cakes.csv (name,price,description,image).
+1. Edit the Google Sheet set in MENU_SHEET_URL (assets/js/main.js), with columns
+   name, price, description, image. Changes show on the site within a few minutes.
+   If the Sheet can't be loaded, the site uses assets/data/cakes.csv instead.
 2. Put the cake photo in assets/cake/ with the same filename as the "image" column.
 3. Optional: add a smaller, faster copy at assets/cake/web/<name>.webp.
    If it is missing, the site automatically uses the original photo.
