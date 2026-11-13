@@ -23,7 +23,13 @@ import * as THREE from "./vendor/three.module.min.js";
 
     renderer.setClearColor(0x000000, 0);
     renderer.toneMapping = THREE.NoToneMapping; // keep the cake colours true to the photos
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 700 ? 1.5 : 2));
+    var small = window.innerWidth < 700;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small ? 1.5 : 2));
+    renderer.localClippingEnabled = true; // used to cut a slice out of the cake
+    // Soft shadows, kept cheap on phones and low-core devices
+    var lowPower = small || (navigator.hardwareConcurrency || 8) <= 4;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = lowPower ? THREE.PCFShadowMap : THREE.PCFSoftShadowMap;
     stage.appendChild(renderer.domElement);
 
     var scene = new THREE.Scene();
@@ -33,6 +39,15 @@ import * as THREE from "./vendor/three.module.min.js";
     scene.add(new THREE.HemisphereLight(0xffffff, 0xcfe8ff, 0.6));
     var key = new THREE.DirectionalLight(0xffffff, 1.45);
     key.position.set(4, 8, 5);
+    key.castShadow = true;
+    key.shadow.mapSize.set(lowPower ? 512 : 1024, lowPower ? 512 : 1024);
+    key.shadow.camera.left = key.shadow.camera.bottom = -3.2;
+    key.shadow.camera.right = key.shadow.camera.top = 3.2;
+    key.shadow.camera.near = 2;
+    key.shadow.camera.far = 20;
+    key.shadow.bias = -0.0006;
+    key.shadow.normalBias = 0.03;
+    key.shadow.radius = 4;
     scene.add(key);
     var rim = new THREE.DirectionalLight(0x66ccff, 1.2);
     rim.position.set(-6, 3, -4);
@@ -363,6 +378,192 @@ import * as THREE from "./vendor/three.module.min.js";
         }
     };
 
+    /* ---------- What each cake looks like inside (shown on the cut slice) ----------
+       Layers bottom to top: sponge, filling, sponge, ... then the top band of frosting. */
+    var INSIDE = {
+        "black-forest": { sponge: 0x4a2416, cream: 0xf6eedc, n: 3, bits: [0xa3101f, 0x8c0c1b], bitR: 0.055, coat: 0x34190f, coatW: 0.07, band: 0.2, topC: CREAM, mound: { r: 0.62, peak: 0.3, c: 0x34190f } },
+        "white-forest": { sponge: 0xf0d9a4, cream: 0xfbf3e2, n: 3, bits: [0xa3101f, 0x8c0c1b], bitR: 0.055, coat: 0xf5e7c4, coatW: 0.07, band: 0.2, topC: CREAM, mound: { r: 0.55, peak: 0.26, c: 0xf5e7c4 } },
+        "red-velvet": { sponge: 0x9e1a28, cream: 0xf8f0e0, n: 3, coat: 0x7a0f1a, coatW: 0.06, band: 0.2, topC: CREAM, mound: { r: 0.5, peak: 0.24, c: 0x8c1020 } },
+        "vancho": { sponge: [0xe9cc8f, 0x5a3220], cream: 0x6e3c22, n: 4, coat: 0x4a2614, coatW: 0.03, band: 0.08, topC: 0xe9d2a8 },
+        "butterscotch": { sponge: 0xf0d090, cream: 0xf6e6c4, n: 3, bits: [0xe19a1c, 0xcf8414], bitR: 0.035, coat: 0xe19a1c, coatW: 0.08, band: 0.2, topC: CREAM },
+        "nutty-bubly": { sponge: 0xe8c48a, cream: 0xd9b88c, n: 3, bits: [0xb06f1e, 0x6b3a1e], bitR: 0.035, coat: 0xc9862a, coatW: 0.08, band: 0.22, topC: 0xd9b88c, mound: { r: 0.5, peak: 0.22, c: 0xc9862a } },
+        "pista": { sponge: 0xd8dfa0, cream: 0xc9e0b0, n: 3, bits: [0x7fb04a, 0x6a9a3a], bitR: 0.025, coat: 0x98c07c, coatW: 0.04, band: 0.06, topC: 0x98c07c },
+        "strawberry": { sponge: 0xf3dcae, cream: 0xf2a7b5, n: 3, bits: [0xd2334f, 0xb8233f], bitR: 0.04, coat: 0xe4808f, coatW: 0.04, band: 0.06, topC: 0xe4808f },
+        "mango": { sponge: 0xf6dc9a, cream: 0xf7c54a, n: 3, bits: [0xf0a800, 0xe89400], bitR: 0.04, coat: 0xf0a800, coatW: 0.04, band: 0.06, topC: 0xf0a800 },
+        "pineapple": { sponge: 0xf6e1a8, cream: 0xfbf3e0, n: 3, bits: [0xf5d33a, 0xe8c020], bitR: 0.04, coat: 0xebcf6f, coatW: 0.04, band: 0.06, topC: 0xebcf6f },
+        "chocolate": { sponge: 0x3a1d10, cream: 0x6b3e24, n: 3, coat: 0x2a140c, coatW: 0.07, band: 0.2, topC: 0x8a5a3b, mound: { r: 0.5, peak: 0.24, c: 0x2a130b } },
+        "honey-cake": { layers: (function () {
+            var L = [];
+            for (var i = 0; i < 8; i++) {
+                L.push([0.17, i % 2 ? 0xc98a3a : 0xd99c4a, "sponge"]);
+                if (i < 7) L.push([0.045, 0xf3dcae, "cream"]);
+            }
+            L.push([0.05, 0xdc8420, "top"]);
+            return L;
+        })(), coat: 0xc98a3a, coatW: 0 }
+    };
+
+    function hex(c) { return "#" + new THREE.Color(c).getHexString(); }
+    function shade(c, l) { return "#" + new THREE.Color(c).offsetHSL(0, 0, l).getHexString(); }
+
+    // Paints the cut face: a radial cross-section from the centre (left) to the outside (right)
+    function cutTexture(spec, top, Wd, Hc) {
+        var S = 220 / Wd, w = Math.round(Wd * S), h = Math.round(Hc * S);
+        var c = document.createElement("canvas");
+        c.width = w; c.height = h;
+        var g = c.getContext("2d"), i, k;
+        function Y(y) { return h - y * S; } // world height -> canvas row
+
+        var layers = spec.layers;
+        if (!layers) {
+            layers = [];
+            var creamH = 0.11, body = top - spec.band, sp = (body - (spec.n - 1) * creamH) / spec.n;
+            var sponges = [].concat(spec.sponge);
+            for (i = 0; i < spec.n; i++) {
+                layers.push([sp, sponges[i % sponges.length], "sponge"]);
+                if (i < spec.n - 1) layers.push([creamH, spec.cream, "cream"]);
+            }
+            layers.push([spec.band, spec.topC, "top"]);
+        }
+
+        var y = 0;
+        layers.forEach(function (L) {
+            var y0 = Y(y + L[0]), hh = L[0] * S + 1;
+            g.fillStyle = hex(L[1]);
+            g.fillRect(0, y0, w, hh);
+            if (L[2] === "sponge") { // crumb: tiny pores and light specks
+                var n = Math.round(w * hh * 0.05);
+                for (k = 0; k < n; k++) {
+                    g.fillStyle = srand() < 0.6 ? shade(L[1], -0.07 - srand() * 0.06) : shade(L[1], 0.05);
+                    var r = 0.5 + srand() * 1.4;
+                    g.beginPath();
+                    g.ellipse(srand() * w, y0 + srand() * hh, r * 1.4, r, 0, 0, 6.29);
+                    g.fill();
+                }
+            } else if (L[2] === "cream" && spec.bits) { // fruit / nuts in the filling
+                var br = (spec.bitR || 0.04) * S, x = br + srand() * br * 2;
+                while (x < w - br) {
+                    g.fillStyle = hex(spec.bits[Math.floor(srand() * spec.bits.length)]);
+                    g.beginPath();
+                    g.ellipse(x, y0 + hh / 2 + (srand() - 0.5) * hh * 0.2, br * (1 + srand() * 0.4), Math.min(br, hh * 0.42), 0, 0, 6.29);
+                    g.fill();
+                    x += br * (3 + srand() * 4);
+                }
+            } else if (L[2] === "top") { // soft wavy edge where the frosting meets the sponge
+                g.beginPath();
+                g.moveTo(0, y0 + hh - 1);
+                for (k = 0; k <= w; k += 6) g.lineTo(k, y0 + hh - 1 + Math.sin(k * 0.09 + srand()) * 1.6);
+                g.lineTo(w, y0 + hh + 4); g.lineTo(0, y0 + hh + 4);
+                g.fill();
+            }
+            y += L[0];
+        });
+
+        // Outer coating (shavings, nuggets, buttercream) as a ragged strip on the right
+        if (spec.coatW) {
+            var x0 = w - spec.coatW * S - 0.03 * S;
+            g.fillStyle = hex(spec.coat);
+            g.fillRect(x0, Y(top), w - x0, top * S);
+            for (k = 0; k < h; k += 3) {
+                g.fillStyle = shade(spec.coat, (srand() - 0.5) * 0.1);
+                g.fillRect(x0 - srand() * 5, Y(top) + k, 6, 3);
+            }
+        }
+
+        // The topping heap in the middle, cut through
+        if (spec.mound) {
+            var M = spec.mound;
+            g.fillStyle = hex(M.c);
+            g.beginPath();
+            g.moveTo(0, Y(top - 0.02));
+            for (k = 0; k <= M.r * S; k += 2) {
+                var t = k / (M.r * S);
+                var dome = M.peak * 0.9 * Math.sqrt(Math.max(0, 1 - Math.pow(t / 0.92, 2)));
+                g.lineTo(k, Y(top + Math.max(dome, M.peak * Math.pow(1 - t, 1.2)) + srand() * 0.02));
+            }
+            g.lineTo(M.r * S, Y(top - 0.02));
+            g.fill();
+            for (k = 0; k < 160; k++) {
+                g.fillStyle = shade(M.c, (srand() - 0.5) * 0.14);
+                g.fillRect(srand() * M.r * S * 0.95, Y(top + srand() * M.peak * 0.9), 4, 2);
+            }
+        }
+
+        var tex = new THREE.CanvasTexture(c);
+        tex.colorSpace = THREE.SRGBColorSpace;
+        tex.anisotropy = 4;
+        return tex;
+    }
+
+    /* ---------- The cut ----------
+       Each cake is built once and cloned. Clipping planes remove a wedge from the cake
+       and keep only that wedge on the clone (the slice). Painted faces close the cuts. */
+    var WEDGE = 0.95;                 // slice angle (radians)
+    var WMID = Math.PI / 2 + 1.0;     // slice direction in the cake's own frame
+    var A1 = WMID - WEDGE / 2, A2 = WMID + WEDGE / 2;
+    var N1 = new THREE.Vector3(Math.cos(A1 + Math.PI / 2), 0, Math.sin(A1 + Math.PI / 2)); // points into the wedge
+    var N2 = new THREE.Vector3(Math.cos(A2 - Math.PI / 2), 0, Math.sin(A2 - Math.PI / 2));
+    var bodyLocal = [new THREE.Plane(N1.clone().negate(), 0), new THREE.Plane(N2.clone().negate(), 0)];
+    var sliceLocal = [new THREE.Plane(N1.clone(), 0), new THREE.Plane(N2.clone(), 0)];
+    var bodyPlanes = [new THREE.Plane(), new THREE.Plane()];
+    var slicePlanes = [new THREE.Plane(), new THREE.Plane()];
+    var SLICE_OUT = 0.5;
+    var HOME_YAW = WMID - (Math.PI / 2 + 0.95); // turns the slice towards the front left
+
+    function clipGroup(g, planes, intersect) {
+        var map = new Map();
+        function cl(m) {
+            if (!map.has(m)) {
+                var c = m.clone();
+                c.clippingPlanes = planes;
+                c.clipIntersection = intersect;
+                c.clipShadows = true;
+                c.side = THREE.DoubleSide; // so cut pieces read as solid
+                map.set(m, c);
+            }
+            return map.get(m);
+        }
+        g.traverse(function (o) {
+            if (!o.material) return;
+            o.material = Array.isArray(o.material) ? o.material.map(cl) : cl(o.material);
+            var instanced = o.isInstancedMesh;
+            o.castShadow = !instanced;          // the solid parts are enough for the shadow
+            o.receiveShadow = !instanced;
+        });
+    }
+
+    function addCutFaces(g, faceMat, Wd, Hc) {
+        [A1, A2].forEach(function (a) {
+            var geo = new THREE.PlaneGeometry(Wd, Hc);
+            geo.translate(Wd / 2, Hc / 2, 0);
+            var m = new THREE.Mesh(geo, faceMat);
+            m.rotation.y = -a;
+            m.receiveShadow = true;
+            g.add(m);
+        });
+    }
+
+    function buildCake(key) {
+        var body = new THREE.Group();
+        seed = hash(key);
+        var top = MODELS[key](body);
+        var slice = body.clone();
+        clipGroup(body, bodyPlanes, true);
+        clipGroup(slice, slicePlanes, false);
+
+        var spec = INSIDE[key];
+        var faceTop = key === "honey-cake" || key === "vancho" ? top : top - 0.002;
+        var Wd = R + 0.03, Hc = faceTop + (spec.mound ? spec.mound.peak + 0.06 : 0.002);
+        var faceMat = new THREE.MeshStandardMaterial({ map: cutTexture(spec, faceTop, Wd, Hc), roughness: 0.85, side: THREE.DoubleSide, alphaTest: 0.5 });
+        addCutFaces(body, faceMat, Wd, Hc);
+        addCutFaces(slice, faceMat, Wd, Hc);
+
+        var g = new THREE.Group();
+        g.add(body, slice);
+        g.userData = { top: top, body: body, slice: slice };
+        return g;
+    }
+
     // Used when assets/data/cakes.csv can't be read
     var DEFAULTS = [
         ["Black Forest", "black-forest"], ["White Forest", "white-forest"], ["Red Velvet", "red-velvet"],
@@ -385,6 +586,7 @@ import * as THREE from "./vendor/three.module.min.js";
     root.add(goldEdge);
     var board = new THREE.Mesh(new THREE.CylinderGeometry(2.05, 2.05, 0.03, 80), mat(0xffffff, { roughness: 0.4 }));
     board.position.y = 0.045;
+    board.receiveShadow = true;
     root.add(board);
 
     var cakeSlot = new THREE.Group();
@@ -425,23 +627,21 @@ import * as THREE from "./vendor/three.module.min.js";
     }
 
     /* ---------- Switching cakes ---------- */
-    var popT = 1, spinVel = 0, topY = 1.8;
+    var popT = 1, spinVel = 0, topY = 1.8, sliceT = 1;
 
     function showCake(i, instant) {
         cakeIndex = (i + cakes.length) % cakes.length;
         var c = cakes[cakeIndex];
         if (current) current.visible = false;
         if (!built[c.key]) {
-            var g = new THREE.Group();
-            seed = hash(c.key);
-            g.userData.top = MODELS[c.key](g);
-            built[c.key] = g;
-            cakeSlot.add(g);
+            built[c.key] = buildCake(c.key);
+            cakeSlot.add(built[c.key]);
         }
         current = built[c.key];
         current.visible = true;
         topY = current.userData.top;
         popT = instant ? 1 : 0;
+        sliceT = reduceMotion ? 1 : (instant ? -0.5 : -0.35); // slice slides out after a short pause
         if (!instant) spinVel += 5;
 
         var nameEl = document.getElementById("flavourName");
@@ -460,7 +660,7 @@ import * as THREE from "./vendor/three.module.min.js";
     }
 
     /* ---------- Interaction ---------- */
-    var yaw = 0.6, dragging = false, moved = 0, lastX = 0, lastT = 0;
+    var yaw = HOME_YAW, dragging = false, moved = 0, lastX = 0, lastT = 0;
     var px = 0, py = 0, tpx = 0, tpy = 0;
     var canvas = renderer.domElement;
     canvas.style.touchAction = "pan-y"; // vertical swipes still scroll the page
@@ -525,8 +725,14 @@ import * as THREE from "./vendor/three.module.min.js";
         if (!reduceMotion) clock += dt;
 
         if (!dragging) {
-            yaw += (reduceMotion ? 0 : 0.28 * dt) + spinVel * dt;
+            yaw += spinVel * dt;
             spinVel *= Math.pow(0.02, dt);
+            if (Math.abs(spinVel) < 0.6) {
+                // settle back to the angle that shows the cut, with a gentle sway
+                var home = HOME_YAW + (reduceMotion ? 0 : Math.sin(clock * 0.45) * 0.38);
+                home += Math.round((yaw - home) / (Math.PI * 2)) * Math.PI * 2;
+                yaw += (home - yaw) * (1 - Math.exp(-dt * 1.6));
+            }
         }
         px += (tpx - px) * (1 - Math.exp(-dt * 5));
         py += (tpy - py) * (1 - Math.exp(-dt * 5));
@@ -545,10 +751,22 @@ import * as THREE from "./vendor/three.module.min.js";
         camera.position.set(Math.sin(px * 0.25) * dist * 0.15, Math.sin(elev) * dist, Math.cos(elev) * dist);
         camera.lookAt(0, 0.8, 0);
 
+        if (sliceT < 1) sliceT = Math.min(1, sliceT + dt * 1.3);
+        if (current) {
+            var st = Math.max(0, sliceT), out = SLICE_OUT * (1 - Math.pow(1 - st, 3));
+            var sl = current.userData.slice;
+            sl.position.set(Math.cos(WMID) * out, 0, Math.sin(WMID) * out);
+            root.updateMatrixWorld(true);
+            for (var k = 0; k < 2; k++) {
+                bodyPlanes[k].copy(bodyLocal[k]).applyMatrix4(current.userData.body.matrixWorld);
+                slicePlanes[k].copy(sliceLocal[k]).applyMatrix4(sl.matrixWorld);
+            }
+        }
+
         updateSprinkles(clock);
         renderer.render(scene, camera);
 
-        if (visible && (!reduceMotion || dragging || now < idleUntil || Math.abs(spinVel) > 0.01 || popT < 1)) {
+        if (visible && (!reduceMotion || dragging || now < idleUntil || Math.abs(spinVel) > 0.01 || popT < 1 || sliceT < 1)) {
             requestAnimationFrame(frame);
         } else {
             running = false;
